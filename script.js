@@ -15,19 +15,21 @@ const gameController = (function gameController() {
         } else {
             currentPlayerTurn = players[0];
         }
+        console.log(`It's ${players[0].name} turn`);
     }
 
     function playTurn(playerName, r, c) {
+        const playerNameIndex = players.findIndex((item) => item.name === playerName);
         if (gameBoard.gameboard[r][c] === 0) {
-            gameBoard.gameboard[r][c] = players.playerName.token;
+            gameBoard.gameboard[r][c] = players[playerNameIndex].token;
         }
-        gameBoard.renderBoard;
+        gameBoard.renderBoard();
+        switchPlayerTurn();
         
     }
 
 
-
-    return {startGame, players, playTurn};
+    return {startGame, players, currentPlayerTurn, playTurn, switchPlayerTurn};
 
 })();
 
@@ -52,7 +54,7 @@ const gameBoard = (function gameBoard() {
 
 
 function createPlayer(name, token) {
-    gameController.players.push({name, token});
+    gameController.players.push({name,token});
     console.log(gameController.players);
 
 }
