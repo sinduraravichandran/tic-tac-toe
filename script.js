@@ -7,7 +7,11 @@ const gameController = (function gameController() {
     //call this after the two players have been created to set the player turn
     function startGame() {
         currentPlayerTurn = players[0];
-        console.log(`It's ${currentPlayerTurn} turn`);
+        console.log(`It's ${currentPlayerTurn.name} turn`);
+    }
+
+    function getCurrentPlayerTurn() {
+        return currentPlayerTurn;
     }
 
     function switchPlayerTurn() {
@@ -52,7 +56,7 @@ const gameController = (function gameController() {
             switchPlayerTurn();
     }
     }   
-    return {startGame, players, currentPlayerTurn, playTurn, switchPlayerTurn};
+    return {startGame, players, getCurrentPlayerTurn, playTurn, switchPlayerTurn};
 
 })();
 
