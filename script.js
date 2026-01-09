@@ -2,7 +2,7 @@ const gameController = (function gameController() {
 
     const players = [];
     let currentPlayerTurn;
-    const gameOver = 0;
+    let gameOver = 0;
 
     //call this after the two players have been created to set the player turn
     function startGame() {
@@ -20,7 +20,7 @@ const gameController = (function gameController() {
         } else {
             currentPlayerTurn = players[0];
         }
-        console.log(`It's ${players[0].name} turn`);
+        console.log(`It's ${currentPlayerTurn.name} turn`);
     }
 
     function checkIfWon() {
@@ -38,6 +38,8 @@ const gameController = (function gameController() {
     ) {
         console.log(`${currentPlayerTurnName} won!` )
         gameOver = 1;
+    } else {
+        console.log("Game still in play");
     }
 
     }
@@ -49,13 +51,14 @@ const gameController = (function gameController() {
             gameBoard.gameboard[r][c] = players[playerNameIndex].name;
         }
         gameBoard.renderBoard();
-        checkIfWon()
+        checkIfWon();
         
         //if no one won in the last turn, keep playing by switching the player
-        if (!gameOver) {
+        if (gameOver === 0) {
             switchPlayerTurn();
     }
     }   
+
     return {startGame, players, getCurrentPlayerTurn, playTurn, switchPlayerTurn};
 
 })();
