@@ -49,6 +49,9 @@ const gameController = (function gameController() {
         const playerNameIndex = players.findIndex((item) => item.name === playerName);
         if (gameBoard.gameboard[r][c] === 0) {
             gameBoard.gameboard[r][c] = players[playerNameIndex].name;
+        } else {
+            console.log("invalid turn");
+            return;
         }
         gameBoard.renderBoard();
         checkIfWon();
