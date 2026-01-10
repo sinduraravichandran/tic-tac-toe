@@ -1,0 +1,20 @@
+* {
+    box-sizing: border-box;
+}
+
+#gameboard {
+    height: 600px;
+    width: 600px;
+    background-color: rgb(241, 240, 255);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+#gameboard > div {
+    height: 180px;
+    width: 180px;
+    background-color: antiquewhite;
+    border: 1px solid brown;
+}
