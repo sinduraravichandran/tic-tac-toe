@@ -7,7 +7,14 @@ const gameController = (function gameController() {
     //call this after the two players have been created to set the player turn
     function startGame() {
         currentPlayerTurn = players[0];
-        console.log(`It's ${currentPlayerTurn.name} turn`);
+        console.log(`It's ${currentPlayerTurn.name} turn`);    
+    }
+
+    function restartGame() {
+        players.length = 0;
+        gameOver = 0;
+        gameBoard.clearBoard();
+        console.log('add players and click Start');
     }
 
     function getCurrentPlayerTurn() {
@@ -62,7 +69,7 @@ const gameController = (function gameController() {
     }
     }   
 
-    return {startGame, players, getCurrentPlayerTurn, playTurn, switchPlayerTurn};
+    return {startGame, players, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame};
 
 })();
 
@@ -82,7 +89,15 @@ const gameBoard = (function gameBoard() {
         console.log(gameboard);
     }
 
-    return {gameboard, renderBoard};
+    function clearBoard() {
+        for (let i=0; i<rows; i++) {
+            for (let j=0; j<columns; j++) {
+                gameboard[i][j] = 0;
+            }
+        }
+    }
+
+    return {gameboard, renderBoard, clearBoard};
 })();
 
 
