@@ -108,4 +108,12 @@ const gameBoard = (function gameBoard() {
 //interacting with the DOM
 function displayController() {
 
+    const player1UI = document.getElementById("player1-input");
+    const player2UI = document.getElementById("player2-input");
+    const cellsUI = document.querySelectorAll(".grid-tile");
+    const startButtonUI = document.getElementById("start-game-button");
+    const resultsUI = document.getElementById("results");
+
+
+    //bind events + figure out where to call that 
 }
