@@ -1,3 +1,4 @@
+//IEFE for controlling the game. All functions for game interactions here
 const gameController = (function gameController() {
 
     const players = [];
@@ -5,6 +6,11 @@ const gameController = (function gameController() {
     let gameOver = 0;
 
     //call this after the two players have been created to set the player turn
+    function addPlayer(name) {
+        players.push({name});
+
+    }
+    
     function startGame() {
         currentPlayerTurn = players[0];
         console.log(`It's ${currentPlayerTurn.name} turn`);    
@@ -51,17 +57,18 @@ const gameController = (function gameController() {
 
     }
 
-
-    function playTurn(playerName, r, c) {
-        const playerNameIndex = players.findIndex((item) => item.name === playerName);
+    function playTurn(r, c) {
+        const playerNameIndex = players.findIndex((item) => item.name === currentPlayerTurn.name);
         if (gameBoard.gameboard[r][c] === 0) {
             gameBoard.gameboard[r][c] = players[playerNameIndex].name;
         } else {
             console.log("invalid turn");
             return;
         }
-        gameBoard.renderBoard();
         checkIfWon();
+
+        //delete after, just for debugging purposes
+        console.log(gameBoard.gameboard);
         
         //if no one won in the last turn, keep playing by switching the player
         if (gameOver === 0) {
@@ -69,10 +76,11 @@ const gameController = (function gameController() {
     }
     }   
 
-    return {startGame, players, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame};
+    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame};
 
 })();
 
+//all functions for maintaining/updating game board 
 const gameBoard = (function gameBoard() {
     const gameboard = [];
     const rows = 3;
@@ -85,10 +93,6 @@ const gameBoard = (function gameBoard() {
         }
     }
 
-    function renderBoard() {
-        console.log(gameboard);
-    }
-
     function clearBoard() {
         for (let i=0; i<rows; i++) {
             for (let j=0; j<columns; j++) {
@@ -97,16 +101,11 @@ const gameBoard = (function gameBoard() {
         }
     }
 
-    return {gameboard, renderBoard, clearBoard};
+    return {gameboard, clearBoard};
 })();
 
 
-function createPlayer(name) {
-    gameController.players.push({name});
-    console.log(gameController.players);
+//interacting with the DOM
+function displayController() {
 
 }
-
-
-
-
