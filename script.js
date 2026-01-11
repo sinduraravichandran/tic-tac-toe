@@ -117,16 +117,20 @@ const displayController = (function displayController() {
 
     function bindEvents() {
         startButtonUI.addEventListener("click", createPlayersStartGame); 
-        //cellsUI.forEach((item) => item.addEventListener("click", ));
+        cellsUI.forEach((item) => item.addEventListener("click", playTurn));
     }
 
-    function consoleLogTest() {
-        console.log("console log test")
+    function playTurn(event) {
+        const firstNumberString = String(event.target.id).charAt(0);
+        const firstNumber = Number(firstNumberString);
+        const secondNumberString = String(event.target.id).charAt(1);
+        const secondNumber = Number(secondNumberString);
+        gameController.playTurn(firstNumber,secondNumber);
     }
 
     function createPlayersStartGame(event) {
-        gameController.addPlayer(player1UI);
-        gameController.addPlayer(player2UI);
+        gameController.addPlayer(player1UI.value);
+        gameController.addPlayer(player2UI.value);
         gameController.startGame();
     }
 
