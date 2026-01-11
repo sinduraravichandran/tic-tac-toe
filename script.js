@@ -116,17 +116,21 @@ const displayController = (function displayController() {
 
 
     function bindEvents() {
-        cellsUI.forEach((item) => item.addEventListener("click", printNodeList));
-        startButtonUI.addEventListener("click", consoleLogTest); 
+        startButtonUI.addEventListener("click", createPlayersStartGame); 
+        //cellsUI.forEach((item) => item.addEventListener("click", ));
     }
 
     function consoleLogTest() {
         console.log("console log test")
     }
 
-    function printNodeList() {
-        
+    function createPlayersStartGame(event) {
+        gameController.addPlayer(player1UI);
+        gameController.addPlayer(player2UI);
+        gameController.startGame();
     }
 
     return {bindEvents}
 })();
+
+displayController.bindEvents();
