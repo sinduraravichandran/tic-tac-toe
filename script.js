@@ -106,7 +106,7 @@ const gameBoard = (function gameBoard() {
 
 
 //interacting with the DOM
-function displayController() {
+const displayController = (function displayController() {
 
     const player1UI = document.getElementById("player1-input");
     const player2UI = document.getElementById("player2-input");
@@ -115,5 +115,18 @@ function displayController() {
     const resultsUI = document.getElementById("results");
 
 
-    //bind events + figure out where to call that 
-}
+    function bindEvents() {
+        cellsUI.forEach((item) => item.addEventListener("click", printNodeList));
+        startButtonUI.addEventListener("click", consoleLogTest); 
+    }
+
+    function consoleLogTest() {
+        console.log("console log test")
+    }
+
+    function printNodeList() {
+        
+    }
+
+    return {bindEvents}
+})();
