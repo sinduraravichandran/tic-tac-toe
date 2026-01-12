@@ -38,16 +38,17 @@ const gameController = (function gameController() {
 
     function checkIfWon() {
         const currentPlayerTurnName = currentPlayerTurn.name;
+        const gameboard = gameBoard.getGameboard();
 
         //if there are three in a row of currentPlayerTurn, then the currentPlayer won
-        if ((gameBoard.gameboard[0][0] === currentPlayerTurnName && gameBoard.gameboard[0][1] === currentPlayerTurnName && gameBoard.gameboard[0][2] === currentPlayerTurnName) ||
-            (gameBoard.gameboard[1][0] === currentPlayerTurnName && gameBoard.gameboard[1][1] === currentPlayerTurnName && gameBoard.gameboard[1][2] === currentPlayerTurnName) ||
-            (gameBoard.gameboard[2][0] === currentPlayerTurnName && gameBoard.gameboard[2][1] === currentPlayerTurnName && gameBoard.gameboard[2][2] === currentPlayerTurnName) ||
-            (gameBoard.gameboard[0][0] === currentPlayerTurnName && gameBoard.gameboard[1][0] === currentPlayerTurnName && gameBoard.gameboard[2][0] === currentPlayerTurnName) ||
-            (gameBoard.gameboard[0][1] === currentPlayerTurnName && gameBoard.gameboard[1][1] === currentPlayerTurnName && gameBoard.gameboard[2][1] === currentPlayerTurnName) ||
-            (gameBoard.gameboard[0][2] === currentPlayerTurnName && gameBoard.gameboard[1][2] === currentPlayerTurnName && gameBoard.gameboard[2][2] === currentPlayerTurnName) ||
-            (gameBoard.gameboard[0][0] === currentPlayerTurnName && gameBoard.gameboard[1][1] === currentPlayerTurnName && gameBoard.gameboard[2][2] === currentPlayerTurnName) ||
-            (gameBoard.gameboard[2][0] === currentPlayerTurnName && gameBoard.gameboard[1][1] === currentPlayerTurnName && gameBoard.gameboard[0][2] === currentPlayerTurnName) 
+        if ((gameboard[0][0] === currentPlayerTurnName && gameboard[0][1] === currentPlayerTurnName && gameboard[0][2] === currentPlayerTurnName) ||
+            (gameboard[1][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[1][2] === currentPlayerTurnName) ||
+            (gameboard[2][0] === currentPlayerTurnName && gameboard[2][1] === currentPlayerTurnName && gameboard[2][2] === currentPlayerTurnName) ||
+            (gameboard[0][0] === currentPlayerTurnName && gameboard[1][0] === currentPlayerTurnName && gameboard[2][0] === currentPlayerTurnName) ||
+            (gameboard[0][1] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[2][1] === currentPlayerTurnName) ||
+            (gameboard[0][2] === currentPlayerTurnName && gameboard[1][2] === currentPlayerTurnName && gameboard[2][2] === currentPlayerTurnName) ||
+            (gameboard[0][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[2][2] === currentPlayerTurnName) ||
+            (gameboard[2][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[0][2] === currentPlayerTurnName) 
     ) {
         console.log(`${currentPlayerTurnName} won!` )
         gameOver = 1;
@@ -58,9 +59,10 @@ const gameController = (function gameController() {
     }
 
     function playTurn(r, c) {
+        const gameboard = gameBoard.getGameboard();
         const playerNameIndex = players.findIndex((item) => item.name === currentPlayerTurn.name);
-        if (gameBoard.gameboard[r][c] === 0) {
-            gameBoard.gameboard[r][c] = players[playerNameIndex].name;
+        if (gameboard[r][c] === 0) {
+            gameboard[r][c] = players[playerNameIndex].name;
         } else {
             console.log("invalid turn");
             return;
@@ -68,7 +70,7 @@ const gameController = (function gameController() {
         checkIfWon();
 
         //delete after, just for debugging purposes
-        console.log(gameBoard.gameboard);
+        console.log(gameboard);
         
         //if no one won in the last turn, keep playing by switching the player
         if (gameOver === 0) {
@@ -101,7 +103,11 @@ const gameBoard = (function gameBoard() {
         }
     }
 
-    return {gameboard, clearBoard};
+    function getGameboard() {
+        return gameboard;
+    }
+
+    return {clearBoard, getGameboard};
 })();
 
 
@@ -117,21 +123,36 @@ const displayController = (function displayController() {
 
     function bindEvents() {
         startButtonUI.addEventListener("click", createPlayersStartGame); 
-        cellsUI.forEach((item) => item.addEventListener("click", playTurn));
+        cellsUI.forEach((item) => item.addEventListener("click", playTurnUI));
     }
 
-    function playTurn(event) {
+    function playTurnUI(event) {
         const firstNumberString = String(event.target.id).charAt(0);
         const firstNumber = Number(firstNumberString);
         const secondNumberString = String(event.target.id).charAt(1);
         const secondNumber = Number(secondNumberString);
         gameController.playTurn(firstNumber,secondNumber);
+        //deleteafter
+        console.log(cellsUI)
     }
 
     function createPlayersStartGame(event) {
         gameController.addPlayer(player1UI.value);
         gameController.addPlayer(player2UI.value);
         gameController.startGame();
+    }
+
+    function renderBoard() {
+        const gameboard = gameBoard.getGameboard();
+        for (let i=0; i<3; i++) {
+            for (let j=0; j<3; j++) {
+                cells
+
+            }
+
+        }
+
+
     }
 
     return {bindEvents}
