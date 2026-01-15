@@ -132,8 +132,7 @@ const displayController = (function displayController() {
         const secondNumberString = String(event.target.id).charAt(1);
         const secondNumber = Number(secondNumberString);
         gameController.playTurn(firstNumber,secondNumber);
-        //deleteafter
-        console.log(cellsUI)
+        renderBoard();
     }
 
     function createPlayersStartGame(event) {
@@ -144,10 +143,13 @@ const displayController = (function displayController() {
 
     function renderBoard() {
         const gameboard = gameBoard.getGameboard();
+        console.log(gameboard)
         for (let i=0; i<3; i++) {
             for (let j=0; j<3; j++) {
-                cells
-
+                //this is where I need to find the index of the cell that has 
+                //the same id as ij and then add innertext for it to read gameboard[i][j]
+                console.log(cellsUI[0].id)
+                console.log(gameboard[i][j]);
             }
 
         }
