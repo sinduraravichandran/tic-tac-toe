@@ -50,10 +50,11 @@ const gameController = (function gameController() {
             (gameboard[0][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[2][2] === currentPlayerTurnName) ||
             (gameboard[2][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[0][2] === currentPlayerTurnName) 
     ) {
-        console.log(`${currentPlayerTurnName} won!` )
         gameOver = 1;
+        return currentPlayerTurnName;
+        console.log(`${currentPlayerTurnName} won!` );
     } else {
-        console.log("Game still in play");
+        return null; 
     }
 
     }
@@ -78,7 +79,7 @@ const gameController = (function gameController() {
     }
     }   
 
-    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame};
+    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame, checkIfWon};
 
 })();
 
@@ -143,21 +144,24 @@ const displayController = (function displayController() {
 
     function renderBoard() {
         const gameboard = gameBoard.getGameboard();
-        console.log(gameboard)
         for (let i=0; i<3; i++) {
             for (let j=0; j<3; j++) {
-                //this is where I need to find the index of the cell that has 
-                //the same id as ij and then add innertext for it to read gameboard[i][j]
-                console.log(cellsUI[0].id)
-                console.log(gameboard[i][j]);
+                const cellIndex = [...cellsUI].findIndex((item) => item.id === `${i}${j}`);
+                if (gameboard[i][j] !== 0) {
+                    cellsUI[cellIndex].innerText = gameboard[i][j];
+                }
+                
             }
+        }
+        if (gameController.checkIfWon()) {
+            resultsUI.innerText = `${gameController.checkIfWon()} won!`
 
         }
-
-
     }
 
     return {bindEvents}
 })();
 
 displayController.bindEvents();
+
+//next up: remove where I update the ui with the winner from renderBoard to playTurnUI. The playturn function itself should return the winner
