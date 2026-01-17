@@ -70,13 +70,13 @@ const gameController = (function gameController() {
         }
         checkIfWon();
 
-        //delete after, just for debugging purposes
-        console.log(gameboard);
-        
         //if no one won in the last turn, keep playing by switching the player
-        if (gameOver === 0) {
+        if (!currentPlayerTurn) {
             switchPlayerTurn();
-    }
+            return currentPlayerTurn.name
+        } else {
+            return null;
+        } 
     }   
 
     return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame, checkIfWon};
