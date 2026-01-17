@@ -52,7 +52,6 @@ const gameController = (function gameController() {
     ) {
         gameOver = 1;
         return currentPlayerTurnName;
-        console.log(`${currentPlayerTurnName} won!` );
     } else {
         return null; 
     }
@@ -169,3 +168,6 @@ const displayController = (function displayController() {
 })();
 
 displayController.bindEvents();
+
+//next, check to see if there are more dependencies calling UI logic from game logic. 
+//then, update so user can't keep playing when gameOver
