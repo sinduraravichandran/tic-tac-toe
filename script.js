@@ -59,6 +59,7 @@ const gameController = (function gameController() {
 
     }
 
+    //plays turn and returns player name who won. if no one win's switch player
     function playTurn(r, c) {
         const gameboard = gameBoard.getGameboard();
         const playerNameIndex = players.findIndex((item) => item.name === currentPlayerTurn.name);
@@ -68,18 +69,18 @@ const gameController = (function gameController() {
             console.log("invalid turn");
             return;
         }
-        checkIfWon();
+        const winner = checkIfWon();
 
         //if no one won in the last turn, keep playing by switching the player
-        if (!currentPlayerTurn) {
+        if (!winner) {
             switchPlayerTurn();
-            return currentPlayerTurn.name
-        } else {
             return null;
+        } else {
+            return currentPlayerTurn.name;
         } 
     }   
 
-    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame, checkIfWon};
+    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame};
 
 })();
 
@@ -128,12 +129,21 @@ const displayController = (function displayController() {
     }
 
     function playTurnUI(event) {
+        //these get the positions of the grid items
         const firstNumberString = String(event.target.id).charAt(0);
         const firstNumber = Number(firstNumberString);
         const secondNumberString = String(event.target.id).charAt(1);
         const secondNumber = Number(secondNumberString);
-        gameController.playTurn(firstNumber,secondNumber);
+
+        //calls the function that plays the turn and updates the UI
+        const winner = gameController.playTurn(firstNumber,secondNumber);
+        console.log(winner);
         renderBoard();
+        if (winner) {
+            resultsUI.innerText = `${winner} won!`;
+        } else {
+            return;
+        }
     }
 
     function createPlayersStartGame(event) {
@@ -153,15 +163,9 @@ const displayController = (function displayController() {
                 
             }
         }
-        if (gameController.checkIfWon()) {
-            resultsUI.innerText = `${gameController.checkIfWon()} won!`
-
-        }
     }
 
     return {bindEvents}
 })();
 
 displayController.bindEvents();
-
-//next up: remove where I update the ui with the winner from renderBoard to playTurnUI. The playturn function itself should return the winner
