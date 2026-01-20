@@ -69,13 +69,15 @@ const gameController = (function gameController() {
             return;
         }
         const winner = checkIfWon();
+        console.log(winner);
 
         //if no one won in the last turn, keep playing by switching the player
+        //if someone won, return the winner
         if (!winner) {
             switchPlayerTurn();
-            return null;
+            return `It's ${currentPlayerTurn.name}'s turn!`;
         } else {
-            return currentPlayerTurn.name;
+            return `${currentPlayerTurn.name} won!`;
         } 
     }   
 
@@ -111,7 +113,7 @@ const gameBoard = (function gameBoard() {
     return {clearBoard, getGameboard};
 })();
 
-
+//-----------------------------------------------------------------------------------
 //interacting with the DOM
 const displayController = (function displayController() {
 
@@ -135,13 +137,15 @@ const displayController = (function displayController() {
         const secondNumber = Number(secondNumberString);
 
         //calls the function that plays the turn and updates the UI
-        const winner = gameController.playTurn(firstNumber,secondNumber);
-        console.log(winner);
+        const turnResult = gameController.playTurn(firstNumber,secondNumber);
         renderBoard();
-        if (winner) {
-            resultsUI.innerText = `${winner} won!`;
+        //if someone won
+        if (turnResult.includes('won') ) {
+            resultsUI.innerText = turnResult;
+
+            //user cannot play anymore
         } else {
-            return;
+            resultsUI.innerText = turnResult;
         }
     }
 
@@ -149,6 +153,10 @@ const displayController = (function displayController() {
         gameController.addPlayer(player1UI.value);
         gameController.addPlayer(player2UI.value);
         gameController.startGame();
+    }
+
+    function restartGame() {
+        
     }
 
     function renderBoard() {
@@ -169,5 +177,19 @@ const displayController = (function displayController() {
 
 displayController.bindEvents();
 
-//next, check to see if there are more dependencies calling UI logic from game logic. 
-//then, update so user can't keep playing when gameOver
+
+
+
+
+
+
+
+
+
+
+
+
+//edge cases to add
+//user can't keep playing after someone has won
+//user can't play until they've clicked start game
+//user can't click start game without adding player names 
