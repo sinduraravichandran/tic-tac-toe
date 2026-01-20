@@ -23,10 +23,6 @@ const gameController = (function gameController() {
         console.log('add players and click Start');
     }
 
-    function isGameOver() {
-        return gameOver;
-    }
-
     function getCurrentPlayerTurn() {
         return currentPlayerTurn;
     }
@@ -100,7 +96,7 @@ const gameController = (function gameController() {
         }
     }   
 
-    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame, isGameOver};
+    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame};
 
 })();
 
