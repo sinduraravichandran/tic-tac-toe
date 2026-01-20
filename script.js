@@ -3,7 +3,7 @@ const gameController = (function gameController() {
 
     const players = [];
     let currentPlayerTurn;
-    let gameOver = 0;
+    let gameOver = false;
 
     //call this after the two players have been created to set the player turn
     function addPlayer(name) {
@@ -18,9 +18,13 @@ const gameController = (function gameController() {
 
     function restartGame() {
         players.length = 0;
-        gameOver = 0;
+        gameOver = false;
         gameBoard.clearBoard();
         console.log('add players and click Start');
+    }
+
+    function isGameOver() {
+        return gameOver;
     }
 
     function getCurrentPlayerTurn() {
@@ -33,7 +37,6 @@ const gameController = (function gameController() {
         } else {
             currentPlayerTurn = players[0];
         }
-        console.log(`It's ${currentPlayerTurn.name} turn`);
     }
 
     function checkIfWon() {
@@ -50,7 +53,7 @@ const gameController = (function gameController() {
             (gameboard[0][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[2][2] === currentPlayerTurnName) ||
             (gameboard[2][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[0][2] === currentPlayerTurnName) 
     ) {
-        gameOver = 1;
+        gameOver = true;
         return currentPlayerTurnName;
     } else {
         return null; 
@@ -60,28 +63,44 @@ const gameController = (function gameController() {
 
     //plays turn and returns player name who won. if no one win's switch player
     function playTurn(r, c) {
-        const gameboard = gameBoard.getGameboard();
-        const playerNameIndex = players.findIndex((item) => item.name === currentPlayerTurn.name);
-        if (gameboard[r][c] === 0) {
-            gameboard[r][c] = players[playerNameIndex].name;
+        if (!gameOver) {
+            const gameboard = gameBoard.getGameboard();
+            const playerNameIndex = players.findIndex((item) => item.name === currentPlayerTurn.name);
+            if (gameboard[r][c] === 0) {
+                gameboard[r][c] = players[playerNameIndex].name;
+            } else {
+                console.log("invalid turn");
+                return {
+                    status: "invalid",
+                    currentPlayerTurn,
+                    winner: null
+                };
+            }
+            const winner = checkIfWon();
+            //if no one won in the last turn, keep playing by switching the player
+            //if someone won, return the winner
+            if (!winner) {
+                switchPlayerTurn();
+                return {
+                    status: "playing",
+                    currentPlayerTurn,
+                    winner: null
+                };
+            } else {
+                return {
+                    status: "won",
+                    winner
+                };
+            }
         } else {
-            console.log("invalid turn");
-            return;
+            return {
+                status: "won", 
+                winner
+            }
         }
-        const winner = checkIfWon();
-        console.log(winner);
-
-        //if no one won in the last turn, keep playing by switching the player
-        //if someone won, return the winner
-        if (!winner) {
-            switchPlayerTurn();
-            return `It's ${currentPlayerTurn.name}'s turn!`;
-        } else {
-            return `${currentPlayerTurn.name} won!`;
-        } 
     }   
 
-    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame};
+    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame, isGameOver};
 
 })();
 
@@ -139,14 +158,11 @@ const displayController = (function displayController() {
         //calls the function that plays the turn and updates the UI
         const turnResult = gameController.playTurn(firstNumber,secondNumber);
         renderBoard();
-        //if someone won
-        if (turnResult.includes('won') ) {
-            resultsUI.innerText = turnResult;
+        if (gameController.isGameOver()) {
 
-            //user cannot play anymore
-        } else {
-            resultsUI.innerText = turnResult;
         }
+        resultsUI.innerText = turnResult;
+        
     }
 
     function createPlayersStartGame(event) {
@@ -179,14 +195,7 @@ displayController.bindEvents();
 
 
 
-
-
-
-
-
-
-
-
+//next -- I refactored playTurn, update UI to consume the new return value
 
 
 //edge cases to add
