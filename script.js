@@ -13,14 +13,12 @@ const gameController = (function gameController() {
     
     function startGame() {
         currentPlayerTurn = players[0];
-        console.log(`It's ${currentPlayerTurn.name} turn`);    
     }
 
     function restartGame() {
         players.length = 0;
         gameOver = false;
         gameBoard.clearBoard();
-        console.log('add players and click Start');
     }
 
     function getCurrentPlayerTurn() {
@@ -148,7 +146,7 @@ const displayController = (function displayController() {
         const secondNumberString = String(event.target.id).charAt(1);
         const secondNumber = Number(secondNumberString);
 
-        //NEED TO REFACTOR calls the function that plays the turn and updates the UI
+        //calls the function that plays the turn and updates the UI
         const turnResult = gameController.playTurn(firstNumber,secondNumber);
         renderBoard();
         if (turnResult.status === "invalid") {
@@ -171,7 +169,8 @@ const displayController = (function displayController() {
         gameController.startGame();
     }
 
-    function restartGame() {
+    function restartUI() {
+
         
     }
 
@@ -180,6 +179,7 @@ const displayController = (function displayController() {
         for (let i=0; i<3; i++) {
             for (let j=0; j<3; j++) {
                 const cellIndex = [...cellsUI].findIndex((item) => item.id === `${i}${j}`);
+                //if the item in the array isn't 0, then update the text with the name
                 if (gameboard[i][j] !== 0) {
                     cellsUI[cellIndex].innerText = gameboard[i][j];
                 }
@@ -195,10 +195,7 @@ displayController.bindEvents();
 
 
 
-//next -- I refactored playTurn, update UI to consume the new return value
-
-
 //edge cases to add
-//Start Game turns to retart game when the game is won
+//Start Game turns to restart game when the game is won
 //user can't play until they've clicked start game
 //user can't click start game without adding player names 
