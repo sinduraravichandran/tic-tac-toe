@@ -158,7 +158,9 @@ const displayController = (function displayController() {
         } else if (turnResult.status === 'won') {
             resultsUI.innerText = `${turnResult.winner.name} won!`
         } else if (turnResult.status === "gameOver") {
-            
+
+            //do nothing
+
         }
         
     }
@@ -197,6 +199,6 @@ displayController.bindEvents();
 
 
 //edge cases to add
-//user can't keep playing after someone has won
+//Start Game turns to retart game when the game is won
 //user can't play until they've clicked start game
 //user can't click start game without adding player names 
