@@ -36,21 +36,19 @@ const gameController = (function gameController() {
     }
 
     function checkIfWon() {
-        const currentPlayerTurnName = currentPlayerTurn.name;
         const gameboard = gameBoard.getGameboard();
-
         //if there are three in a row of currentPlayerTurn, then the currentPlayer won
-        if ((gameboard[0][0] === currentPlayerTurnName && gameboard[0][1] === currentPlayerTurnName && gameboard[0][2] === currentPlayerTurnName) ||
-            (gameboard[1][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[1][2] === currentPlayerTurnName) ||
-            (gameboard[2][0] === currentPlayerTurnName && gameboard[2][1] === currentPlayerTurnName && gameboard[2][2] === currentPlayerTurnName) ||
-            (gameboard[0][0] === currentPlayerTurnName && gameboard[1][0] === currentPlayerTurnName && gameboard[2][0] === currentPlayerTurnName) ||
-            (gameboard[0][1] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[2][1] === currentPlayerTurnName) ||
-            (gameboard[0][2] === currentPlayerTurnName && gameboard[1][2] === currentPlayerTurnName && gameboard[2][2] === currentPlayerTurnName) ||
-            (gameboard[0][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[2][2] === currentPlayerTurnName) ||
-            (gameboard[2][0] === currentPlayerTurnName && gameboard[1][1] === currentPlayerTurnName && gameboard[0][2] === currentPlayerTurnName) 
+        if ((gameboard[0][0] === currentPlayerTurn.name && gameboard[0][1] === currentPlayerTurn.name && gameboard[0][2] === currentPlayerTurn.name) ||
+            (gameboard[1][0] === currentPlayerTurn.name && gameboard[1][1] === currentPlayerTurn.name && gameboard[1][2] === currentPlayerTurn.name) ||
+            (gameboard[2][0] === currentPlayerTurn.name && gameboard[2][1] === currentPlayerTurn.name && gameboard[2][2] === currentPlayerTurn.name) ||
+            (gameboard[0][0] === currentPlayerTurn.name && gameboard[1][0] === currentPlayerTurn.name && gameboard[2][0] === currentPlayerTurn.name) ||
+            (gameboard[0][1] === currentPlayerTurn.name && gameboard[1][1] === currentPlayerTurn.name && gameboard[2][1] === currentPlayerTurn.name) ||
+            (gameboard[0][2] === currentPlayerTurn.name && gameboard[1][2] === currentPlayerTurn.name && gameboard[2][2] === currentPlayerTurn.name) ||
+            (gameboard[0][0] === currentPlayerTurn.name && gameboard[1][1] === currentPlayerTurn.name && gameboard[2][2] === currentPlayerTurn.name) ||
+            (gameboard[2][0] === currentPlayerTurn.name && gameboard[1][1] === currentPlayerTurn.name && gameboard[0][2] === currentPlayerTurn.name) 
     ) {
         gameOver = true;
-        return currentPlayerTurnName;
+        return currentPlayerTurn;
     } else {
         return null; 
     }
@@ -90,8 +88,7 @@ const gameController = (function gameController() {
             }
         } else {
             return {
-                status: "won", 
-                winner
+                status: "gameOver"
             }
         }
     }   
@@ -151,13 +148,18 @@ const displayController = (function displayController() {
         const secondNumberString = String(event.target.id).charAt(1);
         const secondNumber = Number(secondNumberString);
 
-        //calls the function that plays the turn and updates the UI
+        //NEED TO REFACTOR calls the function that plays the turn and updates the UI
         const turnResult = gameController.playTurn(firstNumber,secondNumber);
         renderBoard();
-        if (gameController.isGameOver()) {
-
+        if (turnResult.status === "invalid") {
+            resultsUI.innerText = "Invalid Turn. Try again."
+        } else if (turnResult.status === "playing") {
+            resultsUI.innerText = `It's ${turnResult.currentPlayerTurn.name}'s turn`
+        } else if (turnResult.status === 'won') {
+            resultsUI.innerText = `${turnResult.winner.name} won!`
+        } else if (turnResult.status === "gameOver") {
+            
         }
-        resultsUI.innerText = turnResult;
         
     }
 
