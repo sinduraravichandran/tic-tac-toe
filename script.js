@@ -13,13 +13,15 @@ const gameController = (function gameController() {
     
     function startGame() {
         currentPlayerTurn = players[0];
+        gameOver = false;
+        return gameOver;
     }
 
-    function restartGame() {
-        players.length = 0;
-        gameOver = false;
-        gameBoard.clearBoard();
-    }
+    // function restartGame() {
+    //     players.length = 0;
+    //     gameOver = false;
+    //     gameBoard.clearBoard();
+    // }
 
     function getCurrentPlayerTurn() {
         return currentPlayerTurn;
@@ -91,7 +93,7 @@ const gameController = (function gameController() {
         }
     }   
 
-    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn, restartGame};
+    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn};
 
 })();
 
@@ -166,12 +168,10 @@ const displayController = (function displayController() {
     function createPlayersStartGame(event) {
         gameController.addPlayer(player1UI.value);
         gameController.addPlayer(player2UI.value);
+        player1UI.value = '';
+        player2UI.value = '';
         gameController.startGame();
-    }
-
-    function restartUI() {
-
-        
+    
     }
 
     function renderBoard() {
@@ -186,6 +186,9 @@ const displayController = (function displayController() {
                 
             }
         }
+        if () {
+
+        }
     }
 
     return {bindEvents}
@@ -196,6 +199,10 @@ displayController.bindEvents();
 
 
 //edge cases to add
-//Start Game turns to restart game when the game is won
+//Start Game turns to restart game when the game is won. 
+// I'm going to do it by creating a game state that controls if game is in play
+//or not and when it's in play then you can't edit player names and it says restart
+//when it's not in play you can't edit the other things on the board 
 //user can't play until they've clicked start game
 //user can't click start game without adding player names 
+//handling a draw
