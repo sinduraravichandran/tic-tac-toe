@@ -3,28 +3,26 @@ const gameController = (function gameController() {
 
     const players = [];
     let currentPlayerTurn;
-    let gameOver = false;
+    //values for gameState are idle, playing, won, draw
+    let gameState;
+
+    //getter functions
+    function getCurrentPlayerTurn() {
+        return currentPlayerTurn;
+    }
+
+    function getGameState() {
+        return gameState;
+    }
 
     //call this after the two players have been created to set the player turn
     function addPlayer(name) {
         players.push({name});
-
     }
     
     function startGame() {
         currentPlayerTurn = players[0];
-        gameOver = false;
-        return gameOver;
-    }
-
-    // function restartGame() {
-    //     players.length = 0;
-    //     gameOver = false;
-    //     gameBoard.clearBoard();
-    // }
-
-    function getCurrentPlayerTurn() {
-        return currentPlayerTurn;
+        gameState = "playing";
     }
 
     function switchPlayerTurn() {
@@ -46,54 +44,33 @@ const gameController = (function gameController() {
             (gameboard[0][2] === currentPlayerTurn.name && gameboard[1][2] === currentPlayerTurn.name && gameboard[2][2] === currentPlayerTurn.name) ||
             (gameboard[0][0] === currentPlayerTurn.name && gameboard[1][1] === currentPlayerTurn.name && gameboard[2][2] === currentPlayerTurn.name) ||
             (gameboard[2][0] === currentPlayerTurn.name && gameboard[1][1] === currentPlayerTurn.name && gameboard[0][2] === currentPlayerTurn.name) 
-    ) {
-        gameOver = true;
-        return currentPlayerTurn;
-    } else {
-        return null; 
-    }
+    ){ gameState = "won";} 
 
     }
 
-    //plays turn and returns player name who won. if no one win's switch player
+    //plays turn and returns player name who won. if no one wins switch player
     function playTurn(r, c) {
-        if (!gameOver) {
-            const gameboard = gameBoard.getGameboard();
-            const playerNameIndex = players.findIndex((item) => item.name === currentPlayerTurn.name);
-            if (gameboard[r][c] === 0) {
-                gameboard[r][c] = players[playerNameIndex].name;
-            } else {
-                console.log("invalid turn");
-                return {
-                    status: "invalid",
-                    currentPlayerTurn,
-                    winner: null
-                };
-            }
-            const winner = checkIfWon();
+        const gameboard = gameBoard.getGameboard();
+        const playerNameIndex = players.findIndex((item) => item.name === currentPlayerTurn.name);
+        
+        //check if this is a valid turn; if it is update gameboard
+        if (gameboard[r][c] === 0) {
+            gameboard[r][c] = players[playerNameIndex].name;
+            
+            checkIfWon();
+            
             //if no one won in the last turn, keep playing by switching the player
-            //if someone won, return the winner
-            if (!winner) {
+            if (gameState === "playing") {
                 switchPlayerTurn();
-                return {
-                    status: "playing",
-                    currentPlayerTurn,
-                    winner: null
-                };
-            } else {
-                return {
-                    status: "won",
-                    winner
-                };
-            }
+            } 
+            return {status: "valid"}
         } else {
-            return {
-                status: "gameOver"
-            }
+            return {status: "invalid"};
         }
+
     }   
 
-    return {startGame, addPlayer, getCurrentPlayerTurn, playTurn, switchPlayerTurn};
+    return {startGame, addPlayer, playTurn, switchPlayerTurn, getCurrentPlayerTurn, getGameState};
 
 })();
 
@@ -152,18 +129,17 @@ const displayController = (function displayController() {
         const turnResult = gameController.playTurn(firstNumber,secondNumber);
         renderBoard();
         if (turnResult.status === "invalid") {
-            resultsUI.innerText = "Invalid Turn. Try again."
-        } else if (turnResult.status === "playing") {
-            resultsUI.innerText = `It's ${turnResult.currentPlayerTurn.name}'s turn`
-        } else if (turnResult.status === 'won') {
-            resultsUI.innerText = `${turnResult.winner.name} won!`
-        } else if (turnResult.status === "gameOver") {
-
-            //do nothing
-
+            alert("Invalid Turn. Try again.");
+        }
+        if (gameController.getGameState() === "playing") {
+            resultsUI.innerText === `It's ${gameController.getCurrentPlayerTurn().name}'s turn!`
+        } else if (gameController.getGameState() === "won") {
+            resultsUI.innerText === `${gameController.getCurrentPlayerTurn().name} won!`
+        } else if (gameController.getGameState() === "draw") {
+            resultsUI.innerText === "It's a tie"
         }
         
-    }
+     }
 
     function createPlayersStartGame(event) {
         gameController.addPlayer(player1UI.value);
@@ -186,9 +162,7 @@ const displayController = (function displayController() {
                 
             }
         }
-        if () {
 
-        }
     }
 
     return {bindEvents}
@@ -206,3 +180,9 @@ displayController.bindEvents();
 //user can't play until they've clicked start game
 //user can't click start game without adding player names 
 //handling a draw
+
+
+//first I'm going to build it so it works include edge cases
+//then do the good things like make sure gameController checks state and all that
+
+//in playTurn, are we still checking if won if turn status was invalid?
