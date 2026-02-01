@@ -186,12 +186,11 @@ displayController.bindEvents();
 //Start Game turns to restart game when the game is won. 
 // I'm going to do it by creating a game state that controls if game is in play
 //or not and when it's in play then you can't edit player names and it says restart
-//when it's not in play you can't edit the other things on the board 
-//user can't play until they've clicked start game
-//user can't click start game without adding player names 
 
 
 //first I'm going to build it so it works include edge cases
 //then do the good things like make sure gameController checks state and all that
 
 //in playTurn, are we still checking if won if turn status was invalid?
+
+//make UI pretty
