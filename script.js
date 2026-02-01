@@ -44,7 +44,12 @@ const gameController = (function gameController() {
             (gameboard[0][2] === currentPlayerTurn.name && gameboard[1][2] === currentPlayerTurn.name && gameboard[2][2] === currentPlayerTurn.name) ||
             (gameboard[0][0] === currentPlayerTurn.name && gameboard[1][1] === currentPlayerTurn.name && gameboard[2][2] === currentPlayerTurn.name) ||
             (gameboard[2][0] === currentPlayerTurn.name && gameboard[1][1] === currentPlayerTurn.name && gameboard[0][2] === currentPlayerTurn.name) 
-    ){ gameState = "won";} 
+    ){ 
+        gameState = "won";
+    //check for draw by checking if there are any 0s in the thing 
+        } else if (gameboard[0].includes(0) === false && gameboard[1].includes(0) === false && gameboard[2].includes(0) === false) {
+            gameState = "draw";
+    }
 
     }
 
@@ -120,23 +125,25 @@ const displayController = (function displayController() {
 
     function playTurnUI(event) {
         //these get the positions of the grid items
-        const firstNumberString = String(event.target.id).charAt(0);
-        const firstNumber = Number(firstNumberString);
-        const secondNumberString = String(event.target.id).charAt(1);
-        const secondNumber = Number(secondNumberString);
-
-        //calls the function that plays the turn and updates the UI
-        const turnResult = gameController.playTurn(firstNumber,secondNumber);
-        renderBoard();
-        if (turnResult.status === "invalid") {
-            alert("Invalid Turn. Try again.");
-        }
         if (gameController.getGameState() === "playing") {
-            resultsUI.innerText = `It's ${gameController.getCurrentPlayerTurn().name}'s turn!`
-        } else if (gameController.getGameState() === "won") {
-            resultsUI.innerText = `${gameController.getCurrentPlayerTurn().name} won!`
-        } else if (gameController.getGameState() === "draw") {
-            resultsUI.innerText = "It's a tie"
+            const firstNumberString = String(event.target.id).charAt(0);
+            const firstNumber = Number(firstNumberString);
+            const secondNumberString = String(event.target.id).charAt(1);
+            const secondNumber = Number(secondNumberString);
+    
+            //calls the function that plays the turn and updates the UI
+            const turnResult = gameController.playTurn(firstNumber,secondNumber);
+            renderBoard();
+            if (turnResult.status === "invalid") {
+                alert("Invalid Turn. Try again.");
+            }
+            if (gameController.getGameState() === "playing") {
+                resultsUI.innerText = `It's ${gameController.getCurrentPlayerTurn().name}'s turn!`
+            } else if (gameController.getGameState() === "won") {
+                resultsUI.innerText = `${gameController.getCurrentPlayerTurn().name} won!`
+            } else if (gameController.getGameState() === "draw") {
+                resultsUI.innerText = "It's a tie"
+            }
         }
         
      }
@@ -179,7 +186,6 @@ displayController.bindEvents();
 //when it's not in play you can't edit the other things on the board 
 //user can't play until they've clicked start game
 //user can't click start game without adding player names 
-//handling a draw
 
 
 //first I'm going to build it so it works include edge cases
