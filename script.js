@@ -132,11 +132,11 @@ const displayController = (function displayController() {
             alert("Invalid Turn. Try again.");
         }
         if (gameController.getGameState() === "playing") {
-            resultsUI.innerText === `It's ${gameController.getCurrentPlayerTurn().name}'s turn!`
+            resultsUI.innerText = `It's ${gameController.getCurrentPlayerTurn().name}'s turn!`
         } else if (gameController.getGameState() === "won") {
-            resultsUI.innerText === `${gameController.getCurrentPlayerTurn().name} won!`
+            resultsUI.innerText = `${gameController.getCurrentPlayerTurn().name} won!`
         } else if (gameController.getGameState() === "draw") {
-            resultsUI.innerText === "It's a tie"
+            resultsUI.innerText = "It's a tie"
         }
         
      }
