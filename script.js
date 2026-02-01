@@ -149,13 +149,16 @@ const displayController = (function displayController() {
      }
 
     function createPlayersStartGame(event) {
-        gameController.addPlayer(player1UI.value);
-        gameController.addPlayer(player2UI.value);
-        player1UI.value = '';
-        player2UI.value = '';
-        gameController.startGame();
-    
-    }
+        if (!(player1UI.value) || !(player2UI.value)) { 
+            alert("Enter 2 player names")   
+        } else {
+            gameController.addPlayer(player1UI.value);
+            gameController.addPlayer(player2UI.value);
+            player1UI.value = '';
+            player2UI.value = '';
+            gameController.startGame();
+        }
+        }                
 
     function renderBoard() {
         const gameboard = gameBoard.getGameboard();
