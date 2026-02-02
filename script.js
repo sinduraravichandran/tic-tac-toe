@@ -3,7 +3,7 @@ const gameController = (function gameController() {
 
     const players = [];
     let currentPlayerTurn;
-    //values for gameState are idle, playing, won, draw
+    //values for gameState are playing, won, draw
     let gameState;
 
     //getter functions
@@ -137,13 +137,14 @@ const displayController = (function displayController() {
             renderBoard();
             if (turnResult.status === "invalid") {
                 alert("Invalid Turn. Try again.");
-            }
-            if (gameController.getGameState() === "playing") {
+            } else if (turnResult.status === "valid") {
+                if (gameController.getGameState() === "playing") {
                 resultsUI.innerText = `It's ${gameController.getCurrentPlayerTurn().name}'s turn!`
-            } else if (gameController.getGameState() === "won") {
+                } else if (gameController.getGameState() === "won") {
                 resultsUI.innerText = `${gameController.getCurrentPlayerTurn().name} won!`
-            } else if (gameController.getGameState() === "draw") {
+                } else if (gameController.getGameState() === "draw") {
                 resultsUI.innerText = "It's a tie"
+                }
             }
         }
         
@@ -160,6 +161,7 @@ const displayController = (function displayController() {
             player2UI.value = '';
             gameController.startGame();
             renderBoard();
+            startButtonUI.innerText = 'Restart Game';
         }
         }                
 
@@ -187,15 +189,3 @@ displayController.bindEvents();
 
 
 
-//edge cases to add
-//Start Game turns to restart game when the game is won. 
-// I'm going to do it by creating a game state that controls if game is in play
-//or not and when it's in play then you can't edit player names and it says restart
-
-
-//first I'm going to build it so it works include edge cases
-//then do the good things like make sure gameController checks state and all that
-
-//in playTurn, are we still checking if won if turn status was invalid?
-
-//make UI pretty
