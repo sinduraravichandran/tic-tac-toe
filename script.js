@@ -141,9 +141,9 @@ const displayController = (function displayController() {
                 if (gameController.getGameState() === "playing") {
                 resultsUI.innerText = `It's ${gameController.getCurrentPlayerTurn().name}'s turn!`
                 } else if (gameController.getGameState() === "won") {
-                resultsUI.innerText = `${gameController.getCurrentPlayerTurn().name} won!`
+                resultsUI.innerText = `${gameController.getCurrentPlayerTurn().name} won! Enter player names and click Restart Game to play again.`
                 } else if (gameController.getGameState() === "draw") {
-                resultsUI.innerText = "It's a tie"
+                resultsUI.innerText = "It's a tie. Enter player names and click Restart Game to play again!"
                 }
             }
         }
