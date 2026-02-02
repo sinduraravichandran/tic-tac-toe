@@ -23,6 +23,7 @@ const gameController = (function gameController() {
     function startGame() {
         currentPlayerTurn = players[0];
         gameState = "playing";
+        gameBoard.clearBoard();
     }
 
     function switchPlayerTurn() {
@@ -154,9 +155,11 @@ const displayController = (function displayController() {
         } else {
             gameController.addPlayer(player1UI.value);
             gameController.addPlayer(player2UI.value);
+            resultsUI.innerText = `${player1UI.value}, make the first move!`
             player1UI.value = '';
             player2UI.value = '';
             gameController.startGame();
+            renderBoard();
         }
         }                
 
@@ -168,6 +171,8 @@ const displayController = (function displayController() {
                 //if the item in the array isn't 0, then update the text with the name
                 if (gameboard[i][j] !== 0) {
                     cellsUI[cellIndex].innerText = gameboard[i][j];
+                } else if (gameboard[i][j] === 0) {
+                    cellsUI[cellIndex].innerText = '';
                 }
                 
             }
